@@ -10,12 +10,20 @@ body {
 }
 
 
-.contentContainer {
+.contentMain {
   background-image: url('./assets/intelligence.gif');
   background-size: cover;    
   height: 100vh;
   padding:0;
   margin:0;}
+
+
+  .contentComingSoon {
+    background-image: url('./assets/coming_soon.webp');
+    background-size:auto;    
+    height: 400vh;
+    padding:0;
+    margin:0;}
 
 .content {
  
@@ -29,7 +37,7 @@ body {
 
 
 
-#myBtn {
+#mainScreenBtn {
   width: 200px;
   font-size: 18px;
   padding: 10px;
@@ -39,6 +47,19 @@ body {
   cursor: pointer;  
   margin-right: 137.5px;
   margin-left: 137.5px;  
+}
+
+#backBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: rgb(233, 211, 211);
+  color: rgb(214, 140, 140);
+  cursor: grab;  
+  margin-top: 50.5px;
+  margin-right: 337.5px;
+  margin-left: 837.5px;  
 }
 
 

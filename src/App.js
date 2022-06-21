@@ -72,12 +72,19 @@ const NotImplementedComponent=(props)=>{
   }  
 
   return (        
-    <body>
-    <div class="contentNewPage">
-        <h1> Not Implemented!</h1>        
-    </div>
-    <button  id="myBtn" onClick={ notImplementedPageLoad }>  Go bak to home page </button>    
-    </body>     
+    
+    
+      <div className="contentComingSoon">
+      <div className="content">
+        
+        <button  id="backBtn" onClick="history.back()">  Go back </button>           
+        
+        
+  
+      </div>
+      </div>
+  
+      
   
   );
 
@@ -85,7 +92,15 @@ const NotImplementedComponent=(props)=>{
 
 const YardOccupancyComponent=(props)=>{
   console.log("properties=",props)
-  return <Bar width={500}  height={190} options={options} data={data1} />;
+  return (
+  <div>
+  <Bar width={500}  height={190} options={options} data={data1} />
+  <div>
+    <button  id="backBtn" onClick={ "google.com" }>  Back </button>           
+    
+  </div>
+  </div>
+  );
 }
 function App() {
   const [todos, setTodos] = React.useState([]);
@@ -98,6 +113,8 @@ function App() {
   const yardOccupancyPageLoad= ()=> {    
     getYardOccupancyDataAndSetMode();
   }
+
+  
 
   const setNotImplementedMode=() => {
     setMode(2);
@@ -128,13 +145,13 @@ function App() {
   else
     return (        
     
-    <div className="contentContainer">
+    <div className="contentMain">
     <div className="content">
       
-      <button  id="myBtn" onClick={ yardOccupancyPageLoad }>  Yard Occupancy(Containers) </button>           
-      <button  id="myBtn" onClick={ notImplementedPageLoad }>  Yard Occupancy(GC) </button>         
-      <button  id="myBtn" onClick={ notImplementedPageLoad }>  Machine maintanance schedule  </button>         
-      <button  id="myBtn" onClick={ notImplementedPageLoad }>  TZ Warnings </button>         
+      <button  id="mainScreenBtn" onClick={ yardOccupancyPageLoad }>  Yard Occupancy(Containers) </button>           
+      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  Yard Occupancy(GC) </button>         
+      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  Machine maintanance schedule  </button>         
+      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  TZ Warnings </button>         
       
       
 
@@ -145,3 +162,4 @@ function App() {
 }
 
 export default App;
+
