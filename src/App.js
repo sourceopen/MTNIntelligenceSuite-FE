@@ -2,7 +2,8 @@ import logo from './logo.svg';
 import "react-vis/dist/main.scss"
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalBarSeries} from 'react-vis';
 import React from 'react';
-/*import {
+import { Bar } from "react-chartjs-2";
+import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
@@ -11,18 +12,65 @@ import React from 'react';
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import faker from 'faker';*/
+//import { Bar } from 'react-chartjs-2';
+//import faker from 'faker';
+
+
 
 
 import './App.css';
 //import React from 'react';
 
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" 
+    },
+    title: {
+      display: true,
+      text: "Container Yard Occupancy Prediction"
+    }
+  }
+};
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const labels = ["January", "February", "March", "April", "May", "June", "July"];
+
+export const data1 = {
+  labels,
+  datasets: [
+    {
+      label: "Prediction",
+      data: labels.map(() => 130),
+      backgroundColor: "rgba(92, 92, 92, 0.2)",
+      hoverBackgroundColor: "rgba(92, 92, 92, 1)"
+      
+    },
+    {
+      label: "Actual",
+      //data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      data: labels.map(() => 122),
+      backgroundColor: "rgba(255, 165, 0, 0.2)",
+      hoverBackgroundColor: "rgba(255, 165, 0, 1)"
+    }
+  ]
+};
+
 const NotImplementedComponent=(props)=>{
   const notImplementedPageLoad=()=> {
     props.setMode(3);
     
-  }
+  }  
+
   return (        
     <body>
     <div class="contentNewPage">
@@ -30,35 +78,14 @@ const NotImplementedComponent=(props)=>{
     </div>
     <button  id="myBtn" onClick={ notImplementedPageLoad }>  Go bak to home page </button>    
     </body>     
-    
-
+  
   );
 
 }
 
 const YardOccupancyComponent=(props)=>{
   console.log("properties=",props)
-  return (        
-    
-    <div class="contentNewPage">
-        <XYPlot
-        xType='ordinal'
-          width={700}
-          height={700}>
-          <HorizontalGridLines />
-            <VerticalBarSeries
-              data={[
-              {x :'a', y: 10},
-              {x: 'b', y: 5},
-              {x: 'c', y: 15}
-            ]}/>
-          <XAxis />
-          <YAxis />
-        </XYPlot>
-    </div>
-
-  );
-
+  return <Bar width={500}  height={190} options={options} data={data1} />;
 }
 function App() {
   const [todos, setTodos] = React.useState([]);
