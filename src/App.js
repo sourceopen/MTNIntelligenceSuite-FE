@@ -3,6 +3,7 @@ import "react-vis/dist/main.scss"
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalBarSeries} from 'react-vis';
 import React from 'react';
 import { Bar } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,14 +13,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-//import { Bar } from 'react-chartjs-2';
-//import faker from 'faker';
-
-
-
 
 import './App.css';
-//import React from 'react';
 
 export const options = {
   responsive: true,
@@ -32,6 +27,8 @@ export const options = {
       text: "Container Yard Occupancy Prediction"
     }
   }
+
+  
 };
 
 ChartJS.register(
@@ -43,25 +40,34 @@ ChartJS.register(
   Legend
 );
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+let yardContOccPredictionDataGlob = [];
+const labels = ["1/1", "2/2", "3/3", "4/4", "5/5"];
 
-export const data1 = {
+export const data = {
   labels,
   datasets: [
     {
       label: "Prediction",
-      data: labels.map(() => 130),
-      backgroundColor: "rgba(92, 92, 92, 0.2)",
-      hoverBackgroundColor: "rgba(92, 92, 92, 1)"
       
-    },
+      data: [100,200,300,100,200,1000],
+      backgroundColor: "rgba(92, 92, 92, 0.2)",
+      hoverBackgroundColor: "rgba(92, 92, 92, 1)",
+      borderWidth: 1,
+      borderColor: [
+        'rgb(92, 92, 92, 0.6)'
+        ]
+      },
     {
-      label: "Actual",
-      //data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      data: labels.map(() => 122),
+      label: "Actual",      
+      data: [100,200,300,100,200,1000],
       backgroundColor: "rgba(255, 165, 0, 0.2)",
-      hoverBackgroundColor: "rgba(255, 165, 0, 1)"
-    }
+      hoverBackgroundColor: "rgba(255, 165, 0, 1)",
+      borderWidth: 1,
+      borderColor: [
+        'rgb(255, 165, 0, 0.6)'
+        ]
+    },
+    
   ]
 };
 
@@ -91,55 +97,69 @@ const NotImplementedComponent=(props)=>{
 }
 
 const YardOccupancyComponent=(props)=>{
-  console.log("properties=",props)
-  return (
-  <div>
-  <Bar width={500}  height={190} options={options} data={data1} />
-  <div>
-    <button  id="backBtn" onClick={ "google.com" }>  Back </button>           
+  console.log("properties=",props)  
+  var today = new Date();
+  var yest = new Date();yest.setDate(today.getDate() - 1);
+  //var yest = today.getDate()-1;
+  var date2daysback = new Date();   date2daysback.setDate(today.getDate() - 2);
+  var date3daysback = new Date();   date3daysback.setDate(today.getDate() - 3);  
+  var tomorrow = new Date();   tomorrow.setDate(today.getDate() + 1);
+  //var date2daysAhead = new Date();   date2daysAhead.setDate(today.getDate() + 2);
+
+  var dateStringToday = today.getDate()+'/'+today.getMonth();
+  var dateStringYest = yest.getDate()+'/'+yest.getMonth();
+  var dateString2DaysBack = date2daysback.getDate()+'/'+date2daysback.getMonth();
+  var dateString3DaysBack = date3daysback.getDate()+'/'+date3daysback.getMonth();  
+  var dateStringtomorrow = tomorrow.getDate()+'/'+tomorrow.getMonth();
+  //var dateString2DaysAhead = date2daysAhead.getDate()+'/'+date2daysAhead.getMonth();*/
+
+  //data.labels=new Array(dateStringToday, dateString3DaysBack, dateString2DaysBack, dateStringYest, dateStringToday, dateString1DayAhead, dateString2DaysAhead);
+  data.labels=new Array(dateString3DaysBack, dateString2DaysBack, dateStringYest, dateStringToday, dateStringtomorrow);
+  data.datasets[0].data=[50,60,70,80,90,100];
+  data.datasets[1].data=[50,60,70,80,90,100];
+  console.log('set');
+    return (
+    <div>
+      
+    <Bar width={500}  height={190} options={options} data={data} />
+    <div>
+      <button  id="backBtn" onClick={ "google.com" }>  Back </button>           
+      
+    </div>
     
-  </div>
-  </div>
-  );
+    </div>
+    );
 }
+
 function App() {
-  const [todos, setTodos] = React.useState([]);
-  const [mode, setMode] = React.useState([]);
+  const [mode, setMode] = React.useState();  
 
   const notImplementedPageLoad=()=> {
     setNotImplementedMode();
   }
 
   const yardOccupancyPageLoad= ()=> {    
-    getYardOccupancyDataAndSetMode();
-  }
-
-  
+    getYardOccupancyData();
+  }  
 
   const setNotImplementedMode=() => {
     setMode(2);
   }
-  const getYardOccupancyDataAndSetMode=async() => {
 
-    //rest call here
-    //const resp = await fetch("https://jsonplaceholder.typicode.com/todos",{   mode: 'no-cors'});
-    //const resp = await fetch("http://localhost:5007/frontend/getOccupancyValues");
+  
+  const getYardOccupancyData=async() => {
+      const response = await fetch("http://localhost:5007/frontend/getOccupancyValues");
+      const predictionData = await response.json();
+      yardContOccPredictionDataGlob=predictionData;
+      console.log('predictions = ', predictionData);
+      
+      yardContOccPredictionDataGlob = predictionData;
 
-    /*fetch('https://jsonplaceholder.typicode.com/todos')
-  .then(response => response.json())
-  .then(data => console.log(data));*/
-            
-    
-    //const data=await resp.json();
-    //console.log(data);
-    //setTodos(data);
-    setMode(1);
-
-
+      setMode(1);      
   }
 
   if(mode===1)
-    return (<YardOccupancyComponent todos={todos}/>);
+    return (<YardOccupancyComponent todos={yardContOccPredictionDataGlob}/>);  
   else if(mode===2)
     return (<NotImplementedComponent mode={mode}/>);
   else
@@ -151,9 +171,7 @@ function App() {
       <button  id="mainScreenBtn" onClick={ yardOccupancyPageLoad }>  Yard Occupancy(Containers) </button>           
       <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  Yard Occupancy(GC) </button>         
       <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  Machine maintanance schedule  </button>         
-      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  TZ Warnings </button>         
-      
-      
+      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  TZ Warnings </button>   
 
     </div>
     </div>
