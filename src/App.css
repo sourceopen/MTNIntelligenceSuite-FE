@@ -10,7 +10,7 @@ body {
 }
 
 
-.contentMain {
+.contentMainPage {
   background-image: url('./assets/intelligence.gif');
   background-size: cover;    
   height: 100vh;
@@ -21,7 +21,7 @@ body {
   .contentComingSoon {
     background-image: url('./assets/coming_soon.webp');
     background-size:auto;    
-    height: 400vh;
+    height: 85vh;
     padding:0;
     margin:0;}
 

@@ -48,9 +48,8 @@ export const data = {
   labels,
   datasets: [
     {
-      label: "Prediction",
-      
-      data: [100,200,300,100,200,1000],
+      label: "Prediction",      
+      data: [100,200,300,200,100],
       backgroundColor: "rgba(92, 92, 92, 0.2)",
       hoverBackgroundColor: "rgba(92, 92, 92, 1)",
       borderWidth: 1,
@@ -60,7 +59,7 @@ export const data = {
       },
     {
       label: "Actual",      
-      data: [100,200,300,100,200,1000],
+      data: [100,200,300,200,100],
       backgroundColor: "rgba(255, 165, 0, 0.2)",
       hoverBackgroundColor: "rgba(255, 165, 0, 1)",
       borderWidth: 1,
@@ -78,36 +77,16 @@ const NotImplementedComponent=(props)=>{
     
   }  
 
-  return (        
-    
-    
-      <div className="contentComingSoon">
-      <div className="content">
-        
-        <button  id="backBtn" onClick="history.back()">  Go back </button>           
-        
-        
-  
-      </div>
-      </div>
-  
-      
-  
+  return (
+      <div className="contentComingSoon"/>            
   );
-
 }
 
 
-const backButtonCallBack= ()=> {      
-  App.setMode(0);
-}
 
 const YardOccupancyComponent=(serverResponse)=>{
-  console.log("properties111=",serverResponse) 
+  console.log("properties=",serverResponse) 
   var serverResponseJsonObj = JSON.parse(JSON.stringify(serverResponse));
-  console.log("myobject=",serverResponseJsonObj.serverResponse.actualValues) 
-  console.log("actual=",serverResponseJsonObj.serverResponse.actualValues) 
-  console.log("predicted=",serverResponseJsonObj.serverResponse.predictedValues) 
   var today = new Date();
   var yest = new Date();yest.setDate(today.getDate() - 1);
   var date2daysback = new Date();   date2daysback.setDate(today.getDate() - 2);
@@ -122,16 +101,10 @@ const YardOccupancyComponent=(serverResponse)=>{
   data.labels=new Array(dateString3DaysBack, dateString2DaysBack, dateStringYest, dateStringToday, dateStringtomorrow);
   data.datasets[0].data=serverResponseJsonObj.serverResponse.actualValues;  
   data.datasets[1].data=serverResponseJsonObj.serverResponse.predictedValues;
-  console.log('set');
+  
     return (
-    <div>
-      
-    <Bar width={500}  height={190} options={options} data={data} />
-    <div>
-      
-      <button  id="backBtn" onClick={ backButtonCallBack }>  Back </button>           
-    </div>
-    
+    <div>      
+      <Bar width={500}  height={190} options={options} data={data} />        
     </div>
     );
 }
@@ -155,9 +128,8 @@ function App() {
     setMode(2);
   }
 
-  
   const getYardOccupancyData=async() => {
-      const response = await fetch("http://localhost:5007/frontend/getOccupancyValues");
+      const response = await fetch("http://localhost:5007/frontend/getOccupancyValues");      
       const predictionData = await response.json();
       yardContOccPredictionDataGlob=predictionData;
       console.log('predictions = ', predictionData);
@@ -168,13 +140,25 @@ function App() {
   }
 
   if(mode===1)
-    return (<YardOccupancyComponent serverResponse={yardContOccPredictionDataGlob}/>);  
+    return (
+      <div className="YardOccupancyComponentClass">
+        <YardOccupancyComponent serverResponse={yardContOccPredictionDataGlob}/>
+        <button  id="backBtn" onClick={ backButtonCallBack }>  Back </button>           
+      </div >
+    
+    
+    );  
   else if(mode===2)
-    return (<NotImplementedComponent mode={mode}/>);
+    return (
+      <div className="NotImplementedComponentClass">
+        <NotImplementedComponent mode={mode}/>
+        <button  id="backBtn" onClick={ backButtonCallBack }>Back</button>           
+      </div>
+    );
   else
     return (        
     
-    <div className="contentMain">
+    <div className="contentMainPage">
     <div className="content">
       
       <button  id="mainScreenBtn" onClick={ yardOccupancyPageLoad }>  Yard Occupancy(Containers) </button>           
