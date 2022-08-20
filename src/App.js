@@ -100,23 +100,18 @@ const YardOccupancyComponent=(props)=>{
   console.log("properties=",props)  
   var today = new Date();
   var yest = new Date();yest.setDate(today.getDate() - 1);
-  //var yest = today.getDate()-1;
   var date2daysback = new Date();   date2daysback.setDate(today.getDate() - 2);
   var date3daysback = new Date();   date3daysback.setDate(today.getDate() - 3);  
-  var tomorrow = new Date();   tomorrow.setDate(today.getDate() + 1);
-  //var date2daysAhead = new Date();   date2daysAhead.setDate(today.getDate() + 2);
-
-  var dateStringToday = today.getDate()+'/'+today.getMonth();
-  var dateStringYest = yest.getDate()+'/'+yest.getMonth();
-  var dateString2DaysBack = date2daysback.getDate()+'/'+date2daysback.getMonth();
-  var dateString3DaysBack = date3daysback.getDate()+'/'+date3daysback.getMonth();  
-  var dateStringtomorrow = tomorrow.getDate()+'/'+tomorrow.getMonth();
-  //var dateString2DaysAhead = date2daysAhead.getDate()+'/'+date2daysAhead.getMonth();*/
-
-  //data.labels=new Array(dateStringToday, dateString3DaysBack, dateString2DaysBack, dateStringYest, dateStringToday, dateString1DayAhead, dateString2DaysAhead);
+  var tomorrow = new Date();   tomorrow.setDate(today.getDate() + 1);  
+  var dateStringToday = today.getDate()+'/'+(today.getMonth()+1);
+  var dateStringYest = yest.getDate()+'/'+(yest.getMonth()+1);
+  var dateString2DaysBack = (date2daysback.getDate()+1)+'/'+(date2daysback.getMonth()+1);
+  var dateString3DaysBack = (date3daysback.getDate()+1)+'/'+(date3daysback.getMonth()+1);  
+  var dateStringtomorrow = (tomorrow.getDate()+1)+'/'+(tomorrow.getMonth()+1);
+  
   data.labels=new Array(dateString3DaysBack, dateString2DaysBack, dateStringYest, dateStringToday, dateStringtomorrow);
-  data.datasets[0].data=[50,60,70,80,90,100];
-  data.datasets[1].data=[50,60,70,80,90,100];
+  data.datasets[0].data=[50,60,70,80,90];  
+  data.datasets[1].data=[50,60,70];
   console.log('set');
     return (
     <div>
