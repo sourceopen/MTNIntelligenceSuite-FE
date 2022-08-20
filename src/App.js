@@ -3,6 +3,7 @@ import "react-vis/dist/main.scss"
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalBarSeries} from 'react-vis';
 import React from 'react';
 import { Bar } from "react-chartjs-2";
+import axios from "axios"
 
 import {
   Chart as ChartJS,
@@ -96,8 +97,17 @@ const NotImplementedComponent=(props)=>{
 
 }
 
-const YardOccupancyComponent=(props)=>{
-  console.log("properties=",props)  
+
+const backButtonCallBack= ()=> {      
+  App.setMode(0);
+}
+
+const YardOccupancyComponent=(serverResponse)=>{
+  console.log("properties111=",serverResponse) 
+  var serverResponseJsonObj = JSON.parse(JSON.stringify(serverResponse));
+  console.log("myobject=",serverResponseJsonObj.serverResponse.actualValues) 
+  console.log("actual=",serverResponseJsonObj.serverResponse.actualValues) 
+  console.log("predicted=",serverResponseJsonObj.serverResponse.predictedValues) 
   var today = new Date();
   var yest = new Date();yest.setDate(today.getDate() - 1);
   var date2daysback = new Date();   date2daysback.setDate(today.getDate() - 2);
@@ -110,16 +120,16 @@ const YardOccupancyComponent=(props)=>{
   var dateStringtomorrow = (tomorrow.getDate()+1)+'/'+(tomorrow.getMonth()+1);
   
   data.labels=new Array(dateString3DaysBack, dateString2DaysBack, dateStringYest, dateStringToday, dateStringtomorrow);
-  data.datasets[0].data=[50,60,70,80,90];  
-  data.datasets[1].data=[50,60,70];
+  data.datasets[0].data=serverResponseJsonObj.serverResponse.actualValues;  
+  data.datasets[1].data=serverResponseJsonObj.serverResponse.predictedValues;
   console.log('set');
     return (
     <div>
       
     <Bar width={500}  height={190} options={options} data={data} />
     <div>
-      <button  id="backBtn" onClick={ "google.com" }>  Back </button>           
       
+      <button  id="backBtn" onClick={ backButtonCallBack }>  Back </button>           
     </div>
     
     </div>
@@ -133,7 +143,11 @@ function App() {
     setNotImplementedMode();
   }
 
-  const yardOccupancyPageLoad= ()=> {    
+  const backButtonCallBack= ()=> {      
+    setMode(0);
+  }
+
+  const yardOccupancyPageLoad= ()=> {      
     getYardOccupancyData();
   }  
 
@@ -154,7 +168,7 @@ function App() {
   }
 
   if(mode===1)
-    return (<YardOccupancyComponent todos={yardContOccPredictionDataGlob}/>);  
+    return (<YardOccupancyComponent serverResponse={yardContOccPredictionDataGlob}/>);  
   else if(mode===2)
     return (<NotImplementedComponent mode={mode}/>);
   else
