@@ -3,7 +3,7 @@ import "react-vis/dist/main.scss"
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalBarSeries} from 'react-vis';
 import React from 'react';
 import { Bar } from "react-chartjs-2";
-import axios from "axios"
+import Popup from './components/Popup';
 
 import {
   Chart as ChartJS,
@@ -82,8 +82,6 @@ const NotImplementedComponent=(props)=>{
   );
 }
 
-
-
 const YardOccupancyComponent=(serverResponse)=>{
   console.log("properties=",serverResponse) 
   var serverResponseJsonObj = JSON.parse(JSON.stringify(serverResponse));
@@ -103,8 +101,8 @@ const YardOccupancyComponent=(serverResponse)=>{
   data.datasets[1].data=serverResponseJsonObj.serverResponse.predictedValues;
   
     return (
-    <div>      
-      <Bar width={500}  height={190} options={options} data={data} />        
+    <div>            
+      <Bar width={500}  height={190} options={options} data={data} />              
     </div>
     );
 }
@@ -129,14 +127,19 @@ function App() {
   }
 
   const getYardOccupancyData=async() => {
-      const response = await fetch("http://localhost:5007/frontend/getOccupancyValues");      
+    try {
+      const response = await fetch("http://localhost:5007/frontend/getOccupancyValues");
+      console.log("response = ",response.status)  
       const predictionData = await response.json();
       yardContOccPredictionDataGlob=predictionData;
       console.log('predictions = ', predictionData);
-      
+    
       yardContOccPredictionDataGlob = predictionData;
-
-      setMode(1);      
+      setMode(1);
+    } catch(err) {
+      console.log(err)
+    }
+            
   }
 
   if(mode===1)
@@ -145,13 +148,11 @@ function App() {
         <YardOccupancyComponent serverResponse={yardContOccPredictionDataGlob}/>
         <button  id="backBtn" onClick={ backButtonCallBack }>  Back </button>           
       </div >
-    
-    
     );  
   else if(mode===2)
     return (
       <div className="NotImplementedComponentClass">
-        <NotImplementedComponent mode={mode}/>
+        <NotImplementedComponent mode={mode}/>        
         <button  id="backBtn" onClick={ backButtonCallBack }>Back</button>           
       </div>
     );
@@ -161,10 +162,11 @@ function App() {
     <div className="contentMainPage">
     <div className="content">
       
+    
       <button  id="mainScreenBtn" onClick={ yardOccupancyPageLoad }>  Yard Occupancy(Containers) </button>           
       <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  Yard Occupancy(GC) </button>         
       <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  Machine maintanance schedule  </button>         
-      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  TZ Warnings </button>   
+      <button  id="mainScreenBtn" onClick={ notImplementedPageLoad }>  TZ Warnings </button>         
 
     </div>
     </div>
