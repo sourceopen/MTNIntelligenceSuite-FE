@@ -62,22 +62,15 @@ body {
   margin-left: 837.5px;  
 }
 
-
-#myBtn:hover {
+#mainScreenBtn:hover {
   /*background: #ddd;*/
   
   animation-name: pulse;
   animation-duration: 0.5s;
-  box-shadow:  0 0 1em ;
-
-  
-
-  
+  box-shadow:  0 0 1em ;  
 }
 
 @keyframes pulse {
     0% { box-shadow: 0 0 0 var(--hover); }
   }
   
-
-
